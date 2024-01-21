@@ -1,5 +1,7 @@
 import numpy as np
 
+# this is a 2 player game without any socket implementation
+
 ROW = 6
 COL = 7
 game_over = False
@@ -24,6 +26,32 @@ def get_next_open_row(board, col):
     
     return -1
 
+def winning_move(board, piece):
+    # Check horozontal
+    for c in range(COL -3):
+        for r in range(ROW):
+            if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+                return True
+    
+    # Check vertical
+    for r in range(ROW -3):
+        for c in range(COL):
+            if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+                return True
+
+    # Check digonal top left to bottom right
+    for r in range(ROW -3):
+        for c in range(COL -3):
+            if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+                return True
+    
+    # Check digonal top right to bottom left
+    for r in range(ROW -1, 2):
+        for c in range(COL -3):
+            if board[r][c] == piece and board[r+1][c-1] == piece and board[r+2][c-2] == piece and board[r+3][c-3] == piece:
+                return True
+    # if not winning 
+    return False
 
 board = create_board()
 print(board)
@@ -43,6 +71,10 @@ while not game_over:
             
             print("try again!")
 
+        if winning_move(board, 1):
+            print("player 1 wins")
+            print(board)
+            break
 
     else: 
         while True:
@@ -55,6 +87,11 @@ while not game_over:
                     break
             
             print("try again!")
+        
+        if winning_move(board, 2):
+            print("player 2 wins")
+            print(board)
+            break
     
     print(board)
 
